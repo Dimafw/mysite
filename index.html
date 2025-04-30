@@ -88,20 +88,31 @@
         }
 
         .chat-message {
-            margin-bottom: 10px;
-            padding: 8px 12px;
-            background-color: #e9e9e9;
-            border-radius: 4px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
         }
 
-        .chat-message .user {
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .user {
             font-weight: bold;
             color: #4CAF50;
         }
 
-        .chat-message .time {
-            font-size: 0.8em;
+        .time {
             color: #777;
+        }
+
+        .message-text {
+            word-wrap: break-word;
         }
 
         .chat-input {
@@ -195,6 +206,22 @@
             "Якщо ти хочеш щось змінити, спочатку зміни себе."
         ];
         
+        // Чат
+        let currentUser = "Гість" + Math.floor(Math.random() * 1000);
+        let messages = [];
+        let chatUpdateInterval;
+        
+        // Firebase конфігурація (замініть на свою)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEXAMPLEEXAMPLEEXAMPLE",
+            authDomain: "your-project.firebaseapp.com",
+            databaseURL: "https://your-project.firebaseio.com",
+            projectId: "your-project",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef1234567890"
+        };
+        
         // Перевірка пароля
         function checkPassword() {
             const input = document.getElementById("password-input").value;
@@ -202,7 +229,7 @@
                 document.getElementById("password-screen").style.display = "none";
                 document.getElementById("content").style.display = "block";
                 loadQuotes();
-                loadChat();
+                initChat();
             } else {
                 alert("Невірний пароль!");
             }
@@ -228,25 +255,35 @@
             });
         }
         
-        // Чат
-        let messages = [];
-        let currentUser = "Гість" + Math.floor(Math.random() * 1000);
-        
-        function loadChat() {
-            // Завантаження попередніх повідомлень (якщо є)
-            if (localStorage.getItem('chatMessages')) {
-                messages = JSON.parse(localStorage.getItem('chatMessages'));
-                renderMessages();
-            }
-            
+        // Ініціалізація чату
+        function initChat() {
             // Встановлення обробника подій для поля введення
             document.getElementById("message-input").addEventListener("keypress", function(e) {
                 if (e.key === "Enter") {
                     sendMessage();
                 }
             });
+            
+            // Імітація оновлення чату (для демонстрації)
+            // У реальному додатку тут буде підключення до Firebase або іншого сервісу
+            chatUpdateInterval = setInterval(updateChat, 2000);
+            
+            // Завантаження початкових повідомлень
+            updateChat();
         }
         
+        // Оновлення чату
+        function updateChat() {
+            // Тут має бути запит до сервера для отримання нових повідомлень
+            // Для демонстрації використовуємо localStorage
+            const savedMessages = localStorage.getItem('chatMessages');
+            if (savedMessages) {
+                messages = JSON.parse(savedMessages);
+                renderMessages();
+            }
+        }
+        
+        // Відображення повідомлень
         function renderMessages() {
             const container = document.getElementById("chat-messages");
             container.innerHTML = "";
@@ -255,19 +292,24 @@
                 const messageElement = document.createElement("div");
                 messageElement.className = "chat-message";
                 
+                const headerElement = document.createElement("div");
+                headerElement.className = "message-header";
+                
                 const userElement = document.createElement("span");
                 userElement.className = "user";
                 userElement.textContent = msg.user;
                 
                 const timeElement = document.createElement("span");
                 timeElement.className = "time";
-                timeElement.textContent = " [" + msg.time + "]";
+                timeElement.textContent = msg.time;
                 
-                const textElement = document.createElement("p");
+                const textElement = document.createElement("div");
+                textElement.className = "message-text";
                 textElement.textContent = msg.text;
                 
-                messageElement.appendChild(userElement);
-                messageElement.appendChild(timeElement);
+                headerElement.appendChild(userElement);
+                headerElement.appendChild(timeElement);
+                messageElement.appendChild(headerElement);
                 messageElement.appendChild(textElement);
                 
                 container.appendChild(messageElement);
@@ -277,6 +319,7 @@
             container.scrollTop = container.scrollHeight;
         }
         
+        // Надсилання повідомлення
         function sendMessage() {
             const input = document.getElementById("message-input");
             const text = input.value.trim();
@@ -284,13 +327,15 @@
             if (text) {
                 const now = new Date();
                 const timeString = now.getHours().toString().padStart(2, '0') + ":" + 
-                                   now.getMinutes().toString().padStart(2, '0');
+                                 now.getMinutes().toString().padStart(2, '0');
                 
-                messages.push({
+                const newMessage = {
                     user: currentUser,
                     text: text,
                     time: timeString
-                });
+                };
+                
+                messages.push(newMessage);
                 
                 // Зберігаємо повідомлення
                 localStorage.setItem('chatMessages', JSON.stringify(messages));
@@ -300,6 +345,9 @@
                 
                 // Очищаємо поле введення
                 input.value = "";
+                
+                // Тут має бути відправка повідомлення на сервер
+                // Для демонстрації використовуємо лише localStorage
             }
         }
         
