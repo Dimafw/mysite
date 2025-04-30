@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Секретний сайт</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        #mainContent {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login">
+        <h2>Введіть пароль для входу:</h2>
+        <input type="password" id="password" placeholder="Пароль">
+        <button onclick="checkPassword()">Увійти</button>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <div id="mainContent">
+        <h1>Ласкаво просимо на сайт!</h1>
+        <p>Це захищений вміст.</p>
+    </div>
+
+    <script>
+        const correctPassword = "12345"; // 🔒 Тут твій пароль
+
+        function checkPassword() {
+            const entered = document.getElementById("password").value;
+            if (entered === correctPassword) {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+            } else {
+                document.getElementById("error").textContent = "Неправильний пароль!";
+            }
+        }
+    </script>
+
+</body>
+</html>
