@@ -1,47 +1,80 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Секретний сайт</title>
-    <style></style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-        }
-        #mainContent {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Цитати та Психологія</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #fefefe; }
+    .hidden { display: none; }
+    .card { background: #fff; padding: 20px; margin-top: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    blockquote { font-style: italic; margin: 10px 0; }
+    textarea { width: 100%; height: 80px; }
+    .quote { margin-bottom: 10px; }
+  </style>
 </head>
 <body>
+  <h2>🔐 Введи пароль для входу:</h2>
+  <input type="password" id="pass">
+  <button onclick="checkPass()">Увійти</button>
+  <p id="error" style="color: red;"></p>
 
-    <div id="login">
-        <h2>Введіть пароль для входу:</h2>
-        <input type="password" id="password" placeholder="Пароль">
-        <button onclick="checkPassword()">Увійти</button>
-        <p id="error" style="color: red;"></p>
+  <div id="main" class="hidden">
+    <div class="card">
+      <h1>🧠 Цитати з психології та аніме</h1>
+      <div class="quote">«Ти не є твоїми думками. Ти — той, хто їх спостерігає.»</div>
+      <blockquote>「Той, хто не цінує життя, не заслуговує його.」– Ітачі Учіха</blockquote>
+      <blockquote>「Поки ти не здався — ти не програв.」– Алюкард</blockquote>
     </div>
 
-    <div id="mainContent">
-        <h1>Ласкаво просимо на сайт!</h1>
-        <p>Це захищений вміст.</p>
+    <div class="card">
+      <h2>💬 Напиши свій відгук:</h2>
+      <textarea id="feedback" placeholder="Тут можна написати щось своє..."></textarea><br>
+      <button onclick="saveFeedback()">Надіслати</button>
+      <p id="thanks" style="color: green;"></p>
     </div>
 
-    <script>
-        const correctPassword = "Немен"; // 
+    <div class="card">
+      <h3>📜 Відгуки:</h3>
+      <div id="allFeedbacks"></div>
+    </div>
+  </div>
 
-        function checkPassword() {
-            const entered = document.getElementById("password").value;
-            if (entered === correctPassword) {
-                document.getElementById("login").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-            } else {
-                document.getElementById("error").textContent = "Семен даже не питайся";
-            }
-        }
-    </script>
+  <script>
+    const PASSWORD = "Немен"; // заміни на свій пароль
 
+    function checkPass() {
+      const input = document.getElementById("pass").value;
+      if (input === PASSWORD) {
+        document.getElementById("main").classList.remove("hidden");
+        document.getElementById("error").innerText = "";
+      } else {
+        document.getElementById("error").innerText = "Неправильний пароль.";
+      }
+    }
+
+    function saveFeedback() {
+      const text = document.getElementById("feedback").value.trim();
+      if (!text) return;
+
+      const date = new Date().toLocaleString();
+      const entry = `[${date}] ${text}`;
+
+      let feedbacks = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+      feedbacks.push(entry);
+      localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+
+      document.getElementById("feedback").value = "";
+      document.getElementById("thanks").innerText = "Дякуємо за твій відгук!";
+      showFeedbacks();
+    }
+
+    function showFeedbacks() {
+      let feedbacks = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+      document.getElementById("allFeedbacks").innerHTML = feedbacks.map(f => `<div>${f}</div>`).join("<hr>");
+    }
+
+    // Показати при відкритті
+    showFeedbacks();
+  </script>
 </body>
 </html>
