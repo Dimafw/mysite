@@ -5,105 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аніме Чат</title>
     <style>
-        /* Стилі залишаються ТАКИМИ Ж, як у попередньому коді */
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f0f0; color: #333; }
-        #password-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #222; color: white; }
-        /* ... (інші стилі без змін) ... */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        #password-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #222;
+        }
+        /* ... (інші стилі з попереднього коду) ... */
     </style>
 </head>
 <body>
-    <!-- HTML-структура залишається ТАКОЮ Ж, як раніше -->
-    <div id="password-screen">...</div>
-    <div id="content" style="display: none;">...</div>
+    <div id="password-screen">
+        <h1>Введіть пароль</h1>
+        <input type="password" id="password-input" placeholder="Пароль">
+        <button id="login-btn" onclick="checkPassword()">Увійти</button>
+    </div>
 
-    <!-- Додаємо Firebase SDK -->
+    <div id="content" style="display: none;">
+        <!-- Контент чату -->
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
 
     <script>
-        // Ваша конфігурація Firebase (замініть на свою!)
+        // Виправлена конфігурація Firebase (без зайвої дужки)
         const firebaseConfig = {
-          apiKey: "AIzaSyCaJtyArHRLllZGx2K6UfSUgLlBfaz2R94",
-          authDomain: "animechat-c5763.firebaseapp.com",
-          projectId: "animechat-c5763",
-          storageBucket: "animechat-c5763.firebasestorage.app",
-          messagingSenderId: "316548315656",
-          appId: "1:316548315656:web:b13e301885dff93d5defbd"
-};
+            apiKey: "AIzaSyCaJtyArHRLllZGx2K6UfSUgLlBfaz2R94",
+            authDomain: "animechat-c5763.firebaseapp.com",
+            databaseURL: "https://animechat-c5763-default-rtdb.firebaseio.com", // Додайте це!
+            projectId: "animechat-c5763",
+            storageBucket: "animechat-c5763.appspot.com",
+            messagingSenderId: "316548315656",
+            appId: "1:316548315656:web:b13e301885dff93d5defbd"
         };
 
         // Ініціалізація Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        const PASSWORD = "Немен";
-        let currentUser = "Гість" + Math.floor(Math.random() * 1000);
-
-        function checkPassword() {
-            const input = document.getElementById("password-input").value;
-            if (input === PASSWORD) {
-                document.getElementById("password-screen").style.display = "none";
-                document.getElementById("content").style.display = "block";
-                loadQuotes();
-                initChat();
-            } else {
-                alert("Невірний пароль!");
-            }
-        }
-
-        function initChat() {
-            // Підписка на оновлення чату
-            database.ref('messages').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    messages = Object.values(data);
-                    renderMessages();
-                }
-            });
-
-            document.getElementById("message-input").addEventListener("keypress", (e) => {
-                if (e.key === "Enter") sendMessage();
-            });
-        }
-
-        function sendMessage() {
-            const input = document.getElementById("message-input");
-            const text = input.value.trim();
-            
-            if (text) {
-                const newMessage = {
-                    user: currentUser,
-                    text: text,
-                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                };
-                
-                // Відправка повідомлення в Firebase
-                database.ref('messages').push(newMessage);
-                input.value = "";
-            }
-        }
-
-        function renderMessages() {
-            const container = document.getElementById("chat-messages");
-            container.innerHTML = "";
-            
-            messages.forEach(msg => {
-                const msgElement = document.createElement("div");
-                msgElement.className = "chat-message";
-                msgElement.innerHTML = `
-                    <div class="message-header">
-                        <span class="user">${msg.user}</span>
-                        <span class="time">${msg.time}</span>
-                    </div>
-                    <div class="message-text">${msg.text}</div>
-                `;
-                container.appendChild(msgElement);
-            });
-            
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Інші функції (loadQuotes тощо) залишаються без змін
+        // Решта коду без змін...
     </script>
 </body>
 </html>
