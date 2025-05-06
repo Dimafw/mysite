@@ -114,6 +114,27 @@
             top: 5px;
             color: rgba(231, 76, 60, 0.2);
         }
+
+        /* Стилі для українського режиму */
+        .ukraine-top {
+            background: linear-gradient(to bottom, #0057b7 50%, #ffd700 50%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .ukraine-top h3 {
+            font-size: 24px;
+            margin-top: 0;
+            text-shadow: 1px 1px 2px black;
+        }
+        
+        .ukraine-top p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
         
         #chat-container {
             background-color: #1e1e1e;
@@ -222,15 +243,29 @@
             <!-- Секція з цитатами -->
             <section id="quotes">
                 <h2>Цитати</h2>
-                <div class="quote-section">
-                    <div class="quote-category">
-                        <h3>Берсерк</h3>
-                        <div id="berserk-quotes"></div>
+                <div id="normal-mode">
+                    <div class="quote-section">
+                        <div class="quote-category">
+                            <h3>Берсерк</h3>
+                            <div id="berserk-quotes"></div>
+                        </div>
+                        
+                        <div class="quote-category">
+                            <h3>Токійський Гуль</h3>
+                            <div id="tokyo-ghoul-quotes"></div>
+                        </div>
                     </div>
-                    
-                    <div class="quote-category">
-                        <h3>Токійський Гуль</h3>
-                        <div id="tokyo-ghoul-quotes"></div>
+                </div>
+                
+                <!-- Секретний режим Україна -->
+                <div id="ukraine-mode" style="display: none;">
+                    <div class="ukraine-top">
+                        <h3>Україна топ!</h3>
+                        <p>Слава Україні! Героям слава!</p>
+                        <p>Україна - це сила духу, воля до перемоги!</p>
+                        <p>Ніхто не зможе зупинити український народ!</p>
+                        <p>Ми - нація непереможних!</p>
+                        <p>Україна понад усе! 🇺🇦</p>
                     </div>
                 </div>
             </section>
@@ -274,8 +309,10 @@
 
         // Константи
         const PASSWORD = "09854";
+        const SECRET_WORD = "Семен";
         let currentUser = "Гість" + Math.floor(Math.random() * 1000);
         let messages = [];
+        let secretMode = false;
 
         // Цитати
         const berserkQuotes = [
@@ -283,7 +320,7 @@
             "Людина не може нічого змінити без волі. Воля - це те, що веде людину вперед.",
             "Навіть якщо ти втратив причину жити, просто продовжуй жити. Можливо, знайдеш нову.",
             "Справжній воїн не потребує меча. Він може битися навіть голіруч.",
-            "Життя - це не тільки страждання. У ньому є і світлі моменти, які варті того, щоб за них боротися."
+            "Життя - это не тільки страждання. У ньому є і світлі моменти, які варті того, щоб за них боротися."
         ];
         
         const tokyoGhoulQuotes = [
@@ -299,13 +336,25 @@
         const loginBtn = document.getElementById('login-btn');
         const passwordScreen = document.getElementById('password-screen');
         const content = document.getElementById('content');
+        const normalMode = document.getElementById('normal-mode');
+        const ukraineMode = document.getElementById('ukraine-mode');
         
         // Функція перевірки пароля
         function checkPassword() {
-            if (passwordInput.value === PASSWORD) {
+            if (passwordInput.value === PASSWORD || passwordInput.value === SECRET_WORD) {
                 passwordScreen.style.display = 'none';
                 content.style.display = 'block';
-                loadQuotes();
+                
+                if (passwordInput.value === SECRET_WORD) {
+                    secretMode = true;
+                    normalMode.style.display = 'none';
+                    ukraineMode.style.display = 'block';
+                    document.querySelector('header h1').textContent = 'Український Чат';
+                    document.querySelector('header p').textContent = 'Слава Україні! Героям слава!';
+                } else {
+                    loadQuotes();
+                }
+                
                 initChat();
             } else {
                 alert('Невірний пароль! Спробуйте ще раз.');
