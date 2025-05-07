@@ -13,21 +13,128 @@
       color: #e0e0e0;
     }
 
-    /* Стилі — без змін, окрім secret-mode */
-    /* ... залишаємо ті самі стилі, крім .secret-mode і .ukraine-box */
+    header {
+      background-color: #1f1f1f;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .quote-section {
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem;
+    }
+
+    .quote-category {
+      flex: 1;
+      margin: 0 1rem;
+      background-color: #1f1f1f;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .quote-category h3 {
+      margin-top: 0;
+    }
+
+    .quote {
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+
+    #chat-container {
+      padding: 1rem;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    #chat-messages {
+      height: 300px;
+      overflow-y: scroll;
+      border: 1px solid #333;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: #1f1f1f;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+    }
+
+    .message-header {
+      font-weight: bold;
+    }
+
+    .message .time {
+      font-size: 0.8em;
+      color: #aaa;
+      margin-left: 0.5rem;
+    }
+
+    #message-form {
+      display: flex;
+      margin-top: 1rem;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    #send-btn {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-left: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #1f1f1f;
+      margin-top: 2rem;
+    }
+
+    #password-screen {
+      text-align: center;
+      padding: 4rem;
+    }
+
+    #password-input {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+    }
+
+    #login-btn {
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      margin-left: 1rem;
+    }
+
+    .secret-mode body {
+      background-color: #000;
+      color: #0f0;
+    }
+
+    /* 🇺🇦 Прапор і блок - ВИДАЛЕНО ЗОВСІМ */
+
+    .ukraine-box {
+      display: none; /* Або видалено повністю */
+    }
   </style>
 </head>
 <body>
-  <!-- Вхід -->
   <div id="password-screen">
     <h1>Вхід до Аніме Чату</h1>
     <input type="password" id="password-input" placeholder="Введіть пароль" />
     <button id="login-btn">Увійти</button>
   </div>
 
-  <!-- Основний контент -->
   <div id="content" style="display: none;">
-    <!-- Цитати -->
     <section id="quotes">
       <h2>Цитати</h2>
       <div class="quote-section">
@@ -42,7 +149,6 @@
       </div>
     </section>
 
-    <!-- Чат -->
     <section id="chat-container">
       <h2>Чат для спілкування</h2>
       <div id="chat-messages"></div>
@@ -57,7 +163,6 @@
     </footer>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
   <script>
@@ -76,6 +181,7 @@
     const database = firebase.database();
 
     const PASSWORD = "09854";
+    const SECRET_WORD = "0607";
     let currentUser = "Гість" + Math.floor(Math.random() * 1000);
     let messages = [];
 
@@ -103,11 +209,15 @@
     function checkPassword() {
       const input = passwordInput.value;
 
-      if (input === PASSWORD) {
+      if (input === PASSWORD || input === SECRET_WORD) {
         passwordScreen.style.display = 'none';
         content.style.display = 'block';
         loadQuotes();
         initChat();
+
+        if (input === SECRET_WORD) {
+          document.body.classList.add('secret-mode');
+        }
       } else {
         alert('Невірний пароль!');
         passwordInput.value = '';
