@@ -204,21 +204,8 @@
         
         /* Стилі для секретного режиму */
         body.secret-mode {
-            background-image: url('https://i.imgur.com/5dO7F3c.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #fff;
-        }
-        
-        .ukraine-box {
-            background-color: rgba(0, 87, 183, 0.7);
-            color: #ffd700;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-            border: 2px solid #ffd700;
+            background-color: #ffb6c1; /* Рожевий фон */
+            color: #333;
         }
     </style>
 </head>
@@ -232,16 +219,6 @@
 
     <!-- Основний контент -->
     <div id="content">
-        <!-- Секретний патріотичний контент -->
-        <div id="ukraine-content" style="display: none;">
-            <div class="ukraine-box">
-                <h2>🇺🇦 Україна понад усе! 🇺🇦</h2>
-                <p>Слава Україні! Героям Слава!</p>
-                <p>Ніхто не зможе зупинити український народ</p>
-                <p>Ми – нація непереможних!</p>
-            </div>
-        </div>
-        
         <!-- Оригінальний контент (цитати) -->
         <section id="quotes">
             <h2>Цитати</h2>
@@ -320,7 +297,6 @@
         const loginBtn = document.getElementById('login-btn');
         const passwordScreen = document.getElementById('password-screen');
         const content = document.getElementById('content');
-        const ukraineContent = document.getElementById('ukraine-content');
         const quotesSection = document.getElementById('quotes');
         
         // Функція перевірки пароля
@@ -331,7 +307,6 @@
                 // Звичайний режим
                 passwordScreen.style.display = 'none';
                 content.style.display = 'block';
-                ukraineContent.style.display = 'none';
                 quotesSection.style.display = 'block';
                 document.body.classList.remove('secret-mode');
                 loadQuotes();
@@ -341,8 +316,7 @@
                 // Секретний режим Maboy
                 passwordScreen.style.display = 'none';
                 content.style.display = 'block';
-                ukraineContent.style.display = 'block';
-                quotesSection.style.display = 'none';
+                quotesSection.style.display = 'block';
                 document.body.classList.add('secret-mode');
                 initChat();
             } 
