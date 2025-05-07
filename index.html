@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аніме Чат | Берсерк & Токійський Гуль</title>
+    <title>Секретний режим з фотофоном</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #121212;
-            color: #e0e0e0;
+            color: #fff;
+            transition: background 0.5s ease;
         }
         
         #password-screen {
@@ -19,428 +20,52 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #1a1a1a;
-        }
-        
-        #password-screen h1 {
-            color: #e74c3c;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
-        }
-        
-        #password-input {
-            padding: 12px 15px;
-            width: 250px;
-            border: 2px solid #e74c3c;
-            border-radius: 5px;
-            background-color: #222;
-            color: white;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        
-        #login-btn {
-            padding: 12px 30px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        #login-btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            background-color: rgba(0,0,0,0.7);
         }
         
         #content {
             display: none;
-            max-width: 1000px;
+            padding: 20px;
+        }
+        
+        .secret-content {
+            background-color: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 2px solid #e74c3c;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            color: #e74c3c;
-            font-size: 2.5em;
-        }
-        
-        h2 {
-            color: #e74c3c;
-            border-left: 4px solid #e74c3c;
-            padding-left: 10px;
-        }
-        
-        .quote-section {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
-        
-        .quote-category {
-            width: 48%;
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-        
-        .quote {
-            background-color: #252525;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 3px solid #e74c3c;
-            border-radius: 4px;
-            position: relative;
-        }
-        
-        .quote::before {
-            content: '"';
-            font-size: 50px;
-            position: absolute;
-            left: 10px;
-            top: 5px;
-            color: rgba(231, 76, 60, 0.2);
-        }
-
-        /* Стилі для українського режиму */
-        .ukraine-top {
-            background: linear-gradient(to bottom, #0057b7 50%, #ffd700 50%);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .ukraine-top h3 {
-            font-size: 24px;
-            margin-top: 0;
-            text-shadow: 1px 1px 2px black;
-        }
-        
-        .ukraine-top p {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        #chat-container {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-        
-        #chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #252525;
-            border-radius: 5px;
-        }
-        
-        .message {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            background-color: #2c2c2c;
-            border-radius: 5px;
-            border-left: 3px solid #3498db;
-        }
-        
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-        
-        .user {
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .time {
-            color: #7f8c8d;
-            font-size: 0.8em;
-        }
-        
-        #message-form {
-            display: flex;
-            gap: 10px;
-        }
-        
-        #message-input {
-            flex-grow: 1;
-            padding: 12px;
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            background-color: #252525;
-            color: white;
-        }
-        
-        #send-btn {
-            padding: 0 25px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        #send-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #7f8c8d;
-            border-top: 1px solid #333;
-        }
-        
-        @media (max-width: 768px) {
-            .quote-section {
-                flex-direction: column;
-            }
-            
-            .quote-category {
-                width: 100%;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Екран пароля -->
     <div id="password-screen">
-        <h1>Вхід до Аніме Чату</h1>
-        <input type="password" id="password-input" placeholder="Введіть пароль">
+        <h1>Введіть секретне слово</h1>
+        <input type="text" id="password-input" placeholder="Слово Maboy відкриє секрет">
         <button id="login-btn">Увійти</button>
     </div>
 
-    <!-- Основний контент -->
     <div id="content">
-        <header>
-            <h1>Аніме Чат</h1>
-            <p>Цитати з улюблених всесвітів та місце для спілкування</p>
-        </header>
-        
-        <main>
-            <!-- Секція з цитатами -->
-            <section id="quotes">
-                <h2>Цитати</h2>
-                <div id="normal-mode">
-                    <div class="quote-section">
-                        <div class="quote-category">
-                            <h3>Берсерк</h3>
-                            <div id="berserk-quotes"></div>
-                        </div>
-                        
-                        <div class="quote-category">
-                            <h3>Токійський Гуль</h3>
-                            <div id="tokyo-ghoul-quotes"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Секретний режим Україна -->
-                <div id="ukraine-mode" style="display: none;">
-                    <div class="ukraine-top">
-                        <h3>Україна топ!</h3>
-                        <p>Слава Україні! Героям слава!</p>
-                        <p>Україна - це сила духу, воля до перемоги!</p>
-                        <p>Ніхто не зможе зупинити український народ!</p>
-                        <p>Ми - нація непереможних!</p>
-                        <p>Україна понад усе! 🇺🇦</p>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Секція чату -->
-            <section id="chat-container">
-                <h2>Чат для спілкування</h2>
-                <div id="chat-messages"></div>
-                <form id="message-form">
-                    <input type="text" id="message-input" placeholder="Напишіть ваше повідомлення..." required>
-                    <button type="submit" id="send-btn">Надіслати</button>
-                </form>
-            </section>
-        </main>
-        
-        <footer>
-            <p>© 2023 Аніме Чат | Усі права захищені</p>
-        </footer>
+        <div class="secret-content">
+            <h2>Вітаємо в секретному режимі!</h2>
+            <p>Тут може бути ваш спеціальний контент</p>
+        </div>
     </div>
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
-    
     <script>
-        // Ваша конфігурація Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDWYjerlRZLVlgFY1PFQbKuygB-lvtVSko",
-            authDomain: "chat-81bca.firebaseapp.com",
-            databaseURL: "https://chat-81bca-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "chat-81bca",
-            storageBucket: "chat-81bca.appspot.com",
-            messagingSenderId: "802437825227",
-            appId: "1:802437825227:web:e41d7b165494b0417e914e",
-            measurementId: "G-DPQXDTW51J"
-        };
-
-        // Ініціалізація Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Константи
-        const PASSWORD = "09854";
-        const SECRET_WORD = "Семен";
-        let currentUser = "Гість" + Math.floor(Math.random() * 1000);
-        let messages = [];
-        let secretMode = false;
-
-        // Цитати
-        const berserkQuotes = [
-            "Ти належиш мені. Від тепер твоє життя належить мені. Твої болючі дні закінчилися. Я не залишу тебе нікому.",
-            "Людина не може нічого змінити без волі. Воля - це те, що веде людину вперед.",
-            "Навіть якщо ти втратив причину жити, просто продовжуй жити. Можливо, знайдеш нову.",
-            "Справжній воїн не потребує меча. Він може битися навіть голіруч.",
-            "Життя - это не тільки страждання. У ньому є і світлі моменти, які варті того, щоб за них боротися."
-        ];
+        const SECRET_WORD = "Maboy";
+        const BACKGROUND_IMAGE_URL = "https://imgur.com/a/B1gwdUb"; // Тут вставте посилання на фото
         
-        const tokyoGhoulQuotes = [
-            "Цей світ хворий. Він хворий, тому що в ньому є такі речі, як я.",
-            "Я не хочу бути правим, я хочу бути сильним! Сильним настільки, щоб ніхто не міг мене образити.",
-            "Іноді треба вчитися програвати, щоб зрозуміти, як вигравати.",
-            "Люди не змінюються, вони просто стають тими, ким вони є насправді.",
-            "Якщо ти хочеш щось змінити, спочатку зміни себе. Іншого шляху немає."
-        ];
-
-        // Отримуємо елементи
-        const passwordInput = document.getElementById('password-input');
-        const loginBtn = document.getElementById('login-btn');
-        const passwordScreen = document.getElementById('password-screen');
-        const content = document.getElementById('content');
-        const normalMode = document.getElementById('normal-mode');
-        const ukraineMode = document.getElementById('ukraine-mode');
-        
-        // Функція перевірки пароля
-        function checkPassword() {
-            if (passwordInput.value === PASSWORD || passwordInput.value === SECRET_WORD) {
-                passwordScreen.style.display = 'none';
-                content.style.display = 'block';
-                
-                if (passwordInput.value === SECRET_WORD) {
-                    secretMode = true;
-                    normalMode.style.display = 'none';
-                    ukraineMode.style.display = 'block';
-                    document.querySelector('header h1').textContent = 'Український Чат';
-                    document.querySelector('header p').textContent = 'Слава Україні! Героям слава!';
-                } else {
-                    loadQuotes();
-                }
-                
-                initChat();
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const input = document.getElementById('password-input').value;
+            
+            if (input === SECRET_WORD) {
+                document.body.style.backgroundImage = `url('${BACKGROUND_IMAGE_URL}')`;
+                document.getElementById('password-screen').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
             } else {
-                alert('Невірний пароль! Спробуйте ще раз.');
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
-        
-        // Додаємо обробники подій для входу
-        loginBtn.addEventListener('click', checkPassword);
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
+                alert("Невірне слово! Спробуйте ще раз.");
             }
         });
-
-        // Завантаження цитат
-        function loadQuotes() {
-            const berserkContainer = document.getElementById("berserk-quotes");
-            const tokyoContainer = document.getElementById("tokyo-ghoul-quotes");
-            
-            berserkQuotes.forEach(quote => {
-                const quoteElement = document.createElement("div");
-                quoteElement.className = "quote";
-                quoteElement.textContent = quote;
-                berserkContainer.appendChild(quoteElement);
-            });
-            
-            tokyoGhoulQuotes.forEach(quote => {
-                const quoteElement = document.createElement("div");
-                quoteElement.className = "quote";
-                quoteElement.textContent = quote;
-                tokyoContainer.appendChild(quoteElement);
-            });
-        }
-
-        // Ініціалізація чату
-        function initChat() {
-            // Підписка на оновлення чату
-            database.ref('messages').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    messages = Object.values(data);
-                    renderMessages();
-                }
-            });
-
-            // Відправка повідомлення
-            document.getElementById('message-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const input = document.getElementById('message-input');
-                const text = input.value.trim();
-                
-                if (text) {
-                    const newMessage = {
-                        user: currentUser,
-                        text: text,
-                        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                    };
-                    
-                    database.ref('messages').push(newMessage);
-                    input.value = '';
-                }
-            });
-        }
-
-        // Відображення повідомлень
-        function renderMessages() {
-            const container = document.getElementById("chat-messages");
-            container.innerHTML = "";
-            
-            messages.forEach(msg => {
-                const messageElement = document.createElement("div");
-                messageElement.className = "message";
-                messageElement.innerHTML = `
-                    <div class="message-header">
-                        <span class="user">${msg.user}</span>
-                        <span class="time">${msg.time}</span>
-                    </div>
-                    <div>${msg.text}</div>
-                `;
-                container.appendChild(messageElement);
-            });
-            
-            container.scrollTop = container.scrollHeight;
-        }
     </script>
 </body>
 </html>
