@@ -11,17 +11,6 @@
             padding: 0;
             background-color: #121212;
             color: #e0e0e0;
-            transition: all 0.5s ease;
-        }
-        
-        /* Стилі для секретного режиму */
-        body.secret-mode {
-            background-image: url('ВАШЕ_ПОСИЛАННЯ_НА_ФОТО');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #fff;
-            text-shadow: 1px 1px 2px #000;
         }
         
         #password-screen {
@@ -30,7 +19,41 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: rgba(0,0,0,0.7);
+            background-color: #1a1a1a;
+        }
+        
+        #password-screen h1 {
+            color: #e74c3c;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+        
+        #password-input {
+            padding: 12px 15px;
+            width: 250px;
+            border: 2px solid #e74c3c;
+            border-radius: 5px;
+            background-color: #222;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        #login-btn {
+            padding: 12px 30px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        #login-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
         
         #content {
@@ -38,21 +61,26 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: rgba(0,0,0,0.7);
-            border-radius: 10px;
         }
         
-        .ukraine-box {
-            background-color: rgba(0, 87, 183, 0.7);
-            color: #ffd700;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+        header {
             text-align: center;
-            border: 2px solid #ffd700;
+            padding: 20px 0;
+            border-bottom: 2px solid #e74c3c;
+            margin-bottom: 30px;
         }
         
-        /* Ваші оригінальні стилі */
+        h1 {
+            color: #e74c3c;
+            font-size: 2.5em;
+        }
+        
+        h2 {
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            padding-left: 10px;
+        }
+        
         .quote-section {
             display: flex;
             justify-content: space-between;
@@ -172,6 +200,25 @@
             .quote-category {
                 width: 100%;
             }
+        }
+        
+        /* Стилі для секретного режиму */
+        body.secret-mode {
+            background-image: url('https://i.imgur.com/5dO7F3c.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+        }
+        
+        .ukraine-box {
+            background-color: rgba(0, 87, 183, 0.7);
+            color: #ffd700;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #ffd700;
         }
     </style>
 </head>
@@ -297,10 +344,6 @@
                 ukraineContent.style.display = 'block';
                 quotesSection.style.display = 'none';
                 document.body.classList.add('secret-mode');
-                
-                // Встановлюємо ваше фото на фон (замініть URL)
-                document.body.style.backgroundImage = "url('https://imgur.com/a/B1gwdUb')";
-                
                 initChat();
             } 
             else {
