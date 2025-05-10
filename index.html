@@ -1,296 +1,75 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Аніме Чат | Берсерк & Токійський Гуль</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Є-Бал™ — заслужи свій бал</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-
-    header {
-      background-color: #1f1f1f;
-      padding: 1rem;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
     }
 
     h1 {
-      margin: 0;
+      font-size: 3rem;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+      margin-bottom: 20px;
     }
 
-    .quote-section {
-      display: flex;
-      justify-content: space-around;
-      padding: 1rem;
+    button {
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background-color: #ff00cc;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
-    .quote-category {
-      flex: 1;
-      margin: 0 1rem;
-      background-color: #1f1f1f;
-      padding: 1rem;
-      border-radius: 8px;
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff00cc, 0 0 40px #ff00cc;
     }
 
-    .quote-category h3 {
-      margin-top: 0;
-    }
-
-    .quote {
-      margin: 0.5rem 0;
-      font-style: italic;
-    }
-
-    #chat-container {
-      padding: 1rem;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    #chat-messages {
-      height: 300px;
-      overflow-y: scroll;
-      border: 1px solid #333;
-      padding: 1rem;
-      border-radius: 8px;
-      background-color: #1f1f1f;
-    }
-
-    .message {
-      margin-bottom: 1rem;
-    }
-
-    .message-header {
-      font-weight: bold;
-    }
-
-    .message .time {
-      font-size: 0.8em;
-      color: #aaa;
-      margin-left: 0.5rem;
-    }
-
-    #message-form {
-      display: flex;
-      margin-top: 1rem;
-    }
-
-    #message-input {
-      flex: 1;
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
-
-    #send-btn {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      margin-left: 0.5rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #1f1f1f;
-      margin-top: 2rem;
-    }
-
-    #password-screen {
-      text-align: center;
-      padding: 4rem;
-    }
-
-    #password-input {
+    #message {
+      margin-top: 30px;
       font-size: 1.2rem;
-      padding: 0.5rem;
-    }
-
-    #login-btn {
-      font-size: 1.2rem;
-      padding: 0.5rem 1rem;
-      margin-left: 1rem;
-    }
-
-    .secret-mode body {
-      background-color: #000;
-      color: #0f0;
-    }
-
-    /* 🇺🇦 Прапор і блок - ВИДАЛЕНО ЗОВСІМ */
-
-    .ukraine-box {
-      display: none; /* Або видалено повністю */
+      color: #ffff66;
+      text-shadow: 0 0 5px #ffff66;
     }
   </style>
 </head>
 <body>
-  <div id="password-screen">
-    <h1>Вхід до Аніме Чату</h1>
-    <input type="password" id="password-input" placeholder="Введіть пароль" />
-    <button id="login-btn">Увійти</button>
-  </div>
+  <h1>Є-Бал™</h1>
+  <button onclick="getBal()">Отримати є-бал</button>
+  <div id="message"></div>
 
-  <div id="content" style="display: none;">
-    <section id="quotes">
-      <h2>Цитати</h2>
-      <div class="quote-section">
-        <div class="quote-category">
-          <h3>Берсерк</h3>
-          <div id="berserk-quotes"></div>
-        </div>
-        <div class="quote-category">
-          <h3>Токійський Гуль</h3>
-          <div id="tokyo-ghoul-quotes"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="chat-container">
-      <h2>Чат для спілкування</h2>
-      <div id="chat-messages"></div>
-      <form id="message-form">
-        <input type="text" id="message-input" placeholder="Напишіть ваше повідомлення..." required />
-        <button type="submit" id="send-btn">Надіслати</button>
-      </form>
-    </section>
-
-    <footer>
-      <p>© 2023 Аніме Чат | Усі права захищені</p>
-    </footer>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDWYjerlRZLVlgFY1PFQbKuygB-lvtVSko",
-      authDomain: "chat-81bca.firebaseapp.com",
-      databaseURL: "https://chat-81bca-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "chat-81bca",
-      storageBucket: "chat-81bca.appspot.com",
-      messagingSenderId: "802437825227",
-      appId: "1:802437825227:web:e41d7b165494b0417e914e",
-      measurementId: "G-DPQXDTW51J"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    const PASSWORD = "09854";
-    const SECRET_WORD = "0607";
-    let currentUser = "Гість" + Math.floor(Math.random() * 1000);
-    let messages = [];
-
-    const berserkQuotes = [
-      "Ти належиш мені...",
-      "Людина не може нічого змінити без волі...",
-      "Навіть якщо ти втратив причину жити...",
-      "Справжній воїн не потребує меча...",
-      "Життя - це не тільки страждання..."
+    const messages = [
+      "Ти отримав +1 є-бал за витримку!",
+      "Сьогодні вже маєш є-бал — не greedy.",
+      "Заслужено! Тримай свій є-бал.",
+      "Є-бал видано. Використовуй з розумом.",
+      "Є-бал: активовано. Продовжуй в тому ж дусі.",
+      "Твоє терпіння = твій є-бал.",
+      "Ну шо, ловиш ще одного!"
     ];
 
-    const tokyoGhoulQuotes = [
-      "Цей світ хворий...",
-      "Я не хочу бути правим...",
-      "Іноді треба вчитися програвати...",
-      "Люди не змінюються...",
-      "Якщо ти хочеш щось змінити..."
-    ];
-
-    const passwordInput = document.getElementById('password-input');
-    const loginBtn = document.getElementById('login-btn');
-    const passwordScreen = document.getElementById('password-screen');
-    const content = document.getElementById('content');
-
-    function checkPassword() {
-      const input = passwordInput.value;
-
-      if (input === PASSWORD || input === SECRET_WORD) {
-        passwordScreen.style.display = 'none';
-        content.style.display = 'block';
-        loadQuotes();
-        initChat();
-
-        if (input === SECRET_WORD) {
-          document.body.classList.add('secret-mode');
-        }
-      } else {
-        alert('Невірний пароль!');
-        passwordInput.value = '';
-        passwordInput.focus();
-      }
-    }
-
-    loginBtn.addEventListener('click', checkPassword);
-    passwordInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') checkPassword();
-    });
-
-    function loadQuotes() {
-      const berserkContainer = document.getElementById("berserk-quotes");
-      const tokyoContainer = document.getElementById("tokyo-ghoul-quotes");
-
-      berserkQuotes.forEach(quote => {
-        const el = document.createElement("div");
-        el.className = "quote";
-        el.textContent = quote;
-        berserkContainer.appendChild(el);
-      });
-
-      tokyoGhoulQuotes.forEach(quote => {
-        const el = document.createElement("div");
-        el.className = "quote";
-        el.textContent = quote;
-        tokyoContainer.appendChild(el);
-      });
-    }
-
-    function initChat() {
-      database.ref('messages').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          messages = Object.values(data);
-          renderMessages();
-        }
-      });
-
-      document.getElementById('message-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const input = document.getElementById('message-input');
-        const text = input.value.trim();
-
-        if (text) {
-          const newMessage = {
-            user: currentUser,
-            text: text,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          };
-          database.ref('messages').push(newMessage);
-          input.value = '';
-        }
-      });
-    }
-
-    function renderMessages() {
-      const container = document.getElementById("chat-messages");
-      container.innerHTML = "";
-      messages.forEach(msg => {
-        const el = document.createElement("div");
-        el.className = "message";
-        el.innerHTML = `
-          <div class="message-header">
-            <span class="user">${msg.user}</span>
-            <span class="time">${msg.time}</span>
-          </div>
-          <div>${msg.text}</div>
-        `;
-        container.appendChild(el);
-      });
-      container.scrollTop = container.scrollHeight;
+    function getBal() {
+      const message = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById("message").innerText = message;
     }
   </script>
 </body>
